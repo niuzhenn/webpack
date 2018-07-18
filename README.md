@@ -55,3 +55,8 @@ loader是
 ```
 
 ```
+
+常用loader：
+1.babel-loader：es6转换js的loader
+2.css-loader：打包css使用的loader
+3.ts-loader：打包ts文件使用的loader

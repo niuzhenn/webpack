@@ -36,7 +36,7 @@ webpack有4个基础配置：
 
 我们看看这几个基础配置：
 1.entry：
-entry是模块入口文件设置
+entry是模块入口文件设置，打包文件从这里找到打包入口
 ```
 entry: {
     index: './src/main.js'
@@ -51,12 +51,40 @@ output: {
 }
 ```
 3.loader:
-loader是
+loader是webpack中使用的插件，在使用插件之前，我们需要先使用npm安装相应的插件，我们以babel-loader和css-loader为例：
 ```
+npm install babel-loader --save
+npm install css-loader --save
+npm install style-loader --save
+```
+执行以上三个命令，我们在本地就安装好了相应的loader，在webpack.config.js文件中，我们就可以使用这些loader对文件进行处理
 
+```
+module: {
+    rules: [
+        {
+            test: /\.js$/,
+            exclude: /node_modules/,
+            loader: 'babel-loader'
+        },
+        {
+            test: /\.css$/,
+            loader: 'style-loader!css-loader'
+        }
+    ]
+}
 ```
 
 常用loader：
 1.babel-loader：es6转换js的loader
 2.css-loader：打包css使用的loader
 3.ts-loader：打包ts文件使用的loader
+
+
+### webpack-dev-server
+webpack-dev-server是webpack内置的一个简易服务器，使用
+```
+webpack-dev-server
+```
+来启动服务器，默认端口3000，启动后在浏览器输入 http://localhost:3000 来访问，再启动的过程中，会自动打包文件。
+

@@ -47,7 +47,7 @@ output是打包文件的输出
 ```
 output: {
     path: path.join(__dirname, 'dist'),
-    filename: '[name].bundle.js',
+    filename: '[name].[hash].bundle.js',
 }
 ```
 
@@ -84,7 +84,7 @@ module: {
         {
             // 图片使用url-loader进行处理，小于8kb的图片会直接转为base64，减少图片的请求
             test: '/\.{jpg|png|jpeg|gif|svg}$/',
-            loader: 'url-loader?limit=8192'
+            loader: 'url-loader?limit=8192&name=images/[hash:8].[name].[ext]'
         }
     ]
 }
@@ -98,6 +98,37 @@ webpack4.0以下loader的加载需要使用loaders字段，webpack4.0使用rules
 3.ts-loader：打包ts文件使用的loader
 4.scss-loader: 打包scss文件使用的loader
 5.url-loader: 处理图片使用的loader
+
+### html-webpack-plugin
+在插件里额外介绍一个html-webpack-plugin插件，这个插件主要用途：生成index.html文件，并在html文件内插入打包文件的引用。
+在使用前，需要先本地安装插件：
+```
+npm install -g html-webpack-plugin --save-dev
+```
+本地安装完成后，在webpack.config.js中进行插件配置：
+```
+plugins:[
+    new HtmlWebpackPlugin({
+        title: 'Webpack Demo', // html页面title
+        filename: __dirname + '/index.html', // html文件存储路径
+        template: __dirname + '/src/index.html', // 模板路径
+        inject: 'body', // 引用模块的注入位置
+        favicon: '', // 页面图标
+        hash: true, // 文件尾是否加上hash
+        cache: true, // 是否需要缓存，如果写true，文件只在有改变时才重新生成
+        showErrors: true, // 是否将错误信息写进页面
+        chunks: '', // entry中如果有多个js，在这里表明需要引入的js，默认为空，即全部引入
+        chunksSortMode: 'auto', // 引入模块的排序方式
+        excludeChunks: '', // 排除的模块
+        xhtml: false,
+        minify: {
+            caseSensitive: false, // 是否大小写敏感
+            collapseBooleanAttributes: true, // 是否简写boolean格式
+            collapseWhitespace: true // 是否去除空格
+        }
+    })
+]
+```
 
 ### webpack的运行
 webpack的运行很简单，直接在项目根文件夹下命令行中输入：
@@ -117,9 +148,14 @@ webpack --config webpack.config.dev.js
 
 
 ### webpack-dev-server
-webpack-dev-server是webpack内置的一个简易服务器，使用
+webpack-dev-server是webpack内置的一个简易服务器，修改源代码后，页面将会自动刷新。
+安装webpack-dev-server
 ```
-webpack-dev-server
+npm install -g webpack-dev-server
 ```
-来启动服务器，默认端口3000，启动后在浏览器输入 http://localhost:3000 来访问，再启动的过程中，会自动打包文件。
+在命令行中使用
+```
+webpack-dev-server --hot --inline
+```
+来启动服务器并开启自动刷新，默认端口8080，启动后在浏览器输入 http://localhost:8080 来访问，再启动的过程中，会自动打包文件。
 

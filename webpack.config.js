@@ -3,10 +3,9 @@ var path = require('path');
 var htmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  // entry: './src/index.js',
   entry: {
     index: './src/index.js',
-    // app: './src/app.js'
+    app: './src/app.js'
   },
   output: {
     filename: '[name].js',
@@ -16,13 +15,17 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.js|jsx$/,
         loader: 'babel-loader',
         exclude: path.resolve(__dirname, 'node_modules'),
         include: path.resolve(__dirname, './src'),
         options: {
           'presets': ['latest']
         }
+      },
+      {
+        test: /\.scss$/,
+        loader: ['style-loader', 'css-loader', 'sass-loader']
       }
     ]
   },

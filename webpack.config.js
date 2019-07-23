@@ -12,8 +12,13 @@ module.exports = {
     filename: '[name].bundle.[hash].js',
     path: path.join(__dirname + '/dist')
   },
+  target: 'web',
   mode: 'development', // development
   devtool: 'eval-source-map',
+  devServer: {
+    contentBase: path.join(__dirname, 'dist'),
+    port: 9090
+  },
   module: {
     rules: [
       {

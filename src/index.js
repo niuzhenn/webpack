@@ -6,7 +6,7 @@ class App {
     _.map([6,7,8,9,0], (item) => {
       console.log(item);
     });
-    console.error('aaa');
+    console.error('aaaaaaa');
   }
   append = () => {
     let rootDom = document.getElementById('root');
